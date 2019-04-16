@@ -12,7 +12,13 @@ form.addEventListener('submit', (event) => {
 
     const message = input.value
 
-    socket.emit('sendMessage', message)
+    socket.emit('sendMessage', message, (error) => {
+        // acknowledgement
+        if (error) {
+            return console.log(error)
+        }
+        console.log('Message delivered!')
+    })
 })
 
 locationButton.addEventListener('click', () => {
@@ -24,6 +30,9 @@ locationButton.addEventListener('click', () => {
         socket.emit('sendLocation', {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude
+        }, () => {
+            // acknowledgement
+            console.log('Location shared!')
         })
     })
 })
