@@ -26,9 +26,17 @@ io.on('connection', (socket) => {
     console.log('New Websocket connection')
 
     socket.emit('message', 'Welcome!')
+    // send a message to everyone except for this socket
+    socket.broadcast.emit('message', 'A new user has joined!')
 
     socket.on('sendMessage', (message) => {
         io.emit('message', message)
+    })
+
+    // Each socket fires a special disconnect event
+    // when the browser tab is closed
+    socket.on('disconnect', () => {
+        io.emit('message', 'A user has left!')
     })
 })
 
