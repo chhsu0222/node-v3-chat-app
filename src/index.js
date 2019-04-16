@@ -33,6 +33,9 @@ io.on('connection', (socket) => {
         io.emit('message', message)
     })
 
+    socket.on('sendLocation', (coords) => {
+        io.emit('message', `https://google.com/maps?q=${coords.latitude},${coords.longitude}`)
+    })
     // Each socket fires a special disconnect event
     // when the browser tab is closed
     socket.on('disconnect', () => {
