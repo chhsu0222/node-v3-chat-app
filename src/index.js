@@ -41,6 +41,11 @@ io.on('connection', (socket) => {
         socket.emit('message', generateMessage('Admin', 'Welcome!'))
         // send a message to everyone in the room except for this socket
         socket.broadcast.to(user.room).emit('message', generateMessage('Admin', `${user.username} has joined!`))
+        // send room data for sidebar
+        io.to(user.room).emit('roomData', {
+            room: user.room,
+            users: getUsersInRoom(user.room)
+        })
 
         callback()
     })
@@ -73,6 +78,11 @@ io.on('connection', (socket) => {
         // Maybe user was not added successfully
         if (user) {
             io.to(user.room).emit('message', generateMessage('Admin', `${user.username} has left!`))
+            // send room data for sidebar
+            io.to(user.room).emit('roomData', {
+                room: user.room,
+                users: getUsersInRoom(user.room)
+            })
         }
     })
 })
